@@ -50,4 +50,13 @@ public class PostService {
         posts.add(post);
         return post;
     }
+
+    public List<Post> findAllByUserEmail(String email, Integer size, String sort) {
+        return posts.stream().filter(post -> email.equals(post.getAuthor())).sorted((post1, post2) -> {
+            int compare = post1.getCreationDate().compareTo(post2.getCreationDate()); //прямой порядок сортировки
+            if(sort.equals("desc"))
+                compare = -1 * compare; //обратный порядок сортировки
+            return compare;
+        }).limit(size).collect(Collectors.toList());
+    }
 }
